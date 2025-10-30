@@ -1,26 +1,48 @@
 <script setup>
-import { ref, reactive} from 'vue';
-import { uid } from 'uid';
-import Header from './components/Header.vue';
-import Formulario from './components/Formulario.vue';
-import Paciente from './components/Paciente.vue';
+      import { ref, reactive, onMounted, watch} from 'vue';
+      import { uid } from 'uid';
+      import Header from './components/Header.vue';
+      import Formulario from './components/Formulario.vue';
+      import Paciente from './components/Paciente.vue';
 
-const pacientes = ref([])
+      const pacientes = ref([])
 
-const paciente = reactive({
-        id: null,
-        nombre: '',
-        propietario: '',
-        email: '',
-        alta: '',
-        sintomas: '',
-    })
-
-    const guardarPaciente = () => {
-      pacientes.value.push({
-        ...paciente,
-        id: uid()
+      watch(pacientes, () => {
+          guardarLocalStorage();
+      }, {
+          deep: true
       })
+
+      onMounted(() => {
+          const pacientesLS = JSON.parse(localStorage.getItem('pacientes')) ?? []
+          pacientes.value = pacientesLS
+      })
+
+      const guardarLocalStorage = () => {
+          localStorage.setItem('pacientes', JSON.stringify(pacientes.value))
+      }
+
+      const paciente = reactive({
+              id: null,
+              nombre: '',
+              propietario: '',
+              email: '',
+              alta: '',
+              sintomas: '',
+          })
+
+      const guardarPaciente = () => {
+        if (paciente.id) {
+          const {id} = paciente
+          const i = pacientes.value.findIndex(paciente => paciente.id === id)
+          pacientes.value[i] = {...paciente}
+         } else {
+          pacientes.value.push({
+            ...paciente,
+            id: uid()
+          })
+        }
+
 
       //* Reset the object
       // paciente.nombre = ''
@@ -36,7 +58,19 @@ const paciente = reactive({
         email: '',
         alta: '',
         sintomas: '',
+        id: null
       })
+    }
+
+    //* Update paciente
+    const actualizarPaciente = (id) => {
+      const pacienteActualizar = pacientes.value.filter(paciente => paciente.id === id)[0]
+      Object.assign(paciente, pacienteActualizar)
+    }
+
+    //* eliminar paciente
+    const eliminarPaciente = (id) =>{
+      pacientes.value = pacientes.value.filter(paciente => paciente.id !== id)
     }
 </script>
 
@@ -51,6 +85,7 @@ const paciente = reactive({
         v-model:alta="paciente.alta"
         v-model:sintomas="paciente.sintomas"
         @guardar-paciente="guardarPaciente"
+        :id="paciente.id"
       />
 
       <div class="md:w-1/2 md:h-screen overflow-y-scroll">
@@ -63,6 +98,8 @@ const paciente = reactive({
           <Paciente 
             v-for="paciente in pacientes"
             :paciente="paciente"
+            @actualizar-paciente="actualizarPaciente"
+            @eliminar-paciente="eliminarPaciente"
           />
         </div>
         <p v-else class="mt-20 text-2xl text-center">No hay pacientes</p>
