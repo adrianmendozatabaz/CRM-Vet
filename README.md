@@ -1,6 +1,13 @@
-# Vue 3 + Vite
-
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
-
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
 "# CRM-Vet" 
+
+Esta aplicacion fue realiza en el curso de Vue.js 3 de Udemy bajo el autor Juan Pablo De la torre Valdez
+
+Utiliza Vue 3 + Vite, TailwindCSS y LocalStorage
+
+Simula un CRM para una veterinaria con lo basico de un formulario de registro
+
+Contiene las operaciones CRUD a nivel LocalStorage
+
+Liga publica del Deploy en Netlify
+
+https://warm-taiyaki-bd39eb.netlify.app/

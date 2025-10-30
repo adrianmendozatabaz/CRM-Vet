@@ -105,5 +105,8 @@
         <p v-else class="mt-20 text-2xl text-center">No hay pacientes</p>
       </div>
     </div>
+    <div class="text-center p-2 bg-white rounded">
+      <p class="font-bold text-md">Obten el codigo en<a href="https://github.com/adrianmendozatabaz/CRM-Vet" target="_blank" class="text-cyan-600"> Adrian Mendoza on GitHub</a></p>
+    </div>
   </div>
 </template>
